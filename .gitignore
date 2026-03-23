@@ -1,0 +1,29 @@
+# Node
+node_modules/
+
+# PlatformIO
+.pio/
+.pioenvs/
+.piolibdeps/
+
+# Python Virtual Environment Folder
+.venv/
+__pycache__/
+*.py[cod]
+
+# VS Code Folder
+.vscode/
+!.vscode/extensions.json
+# SKIP WORKTREE file settings.json
+# !.vscode/settings.json
+
+# Unit Test Folder
+temp/
+
+# Ignored files
+.clang-format
+.prettierrc
+eslint.config.js
+package-lock.json
+package.json
+todo.txt

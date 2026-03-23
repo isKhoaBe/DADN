@@ -1,0 +1,517 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "Inter", sans-serif;
+}
+
+body {
+	display: flex;
+	background: #0d0f15;
+	color: #fff;
+}
+
+/* ==== SIDEBAR ==== */
+.sidebar {
+	width: 250px;
+	min-height: 100vh;
+	background: #11131a;
+	padding: 25px 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 25px;
+	border-right: 1px solid #1c1e26;
+}
+
+.logo-img {
+	width: 160px;
+	margin: 0 auto;
+	opacity: 0.95;
+}
+
+.menu {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.menu-item {
+	padding: 12px 16px;
+	border-radius: 12px;
+	cursor: pointer;
+	font-size: 15px;
+	transition: 0.25s ease;
+}
+
+.menu-item:hover {
+	background: #1c1f29;
+}
+
+.menu-item.active {
+	background: #008cff32;
+	border-left: 4px solid #00eaff;
+	padding-left: 12px;
+}
+
+/* Toggle theme */
+.theme-switcher {
+	margin-top: auto;
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	justify-content: center;
+	padding-top: 25px;
+	border-top: 1px solid #1b1e26;
+}
+
+.switch {
+	position: relative;
+	height: 22px;
+	width: 45px;
+}
+
+.switch input {
+	display: none;
+}
+
+.slider {
+	background: #444857;
+	border-radius: 20px;
+	height: 100%;
+	width: 100%;
+	display: block;
+	position: absolute;
+	cursor: pointer;
+}
+
+.slider:before {
+	content: "";
+	width: 18px;
+	height: 18px;
+	background: white;
+	border-radius: 50%;
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	transition: 0.25s ease;
+}
+
+input:checked + .slider:before {
+	transform: translateX(23px);
+}
+
+/* ==== MAIN AREA ==== */
+.main {
+	flex: 1;
+	padding: 35px 50px;
+}
+
+/* Titles */
+.title {
+	color: #2affda;
+	font-size: 34px;
+	margin-bottom: 20px;
+	font-weight: 700;
+}
+
+.subtitle {
+	color: #8c8f9d;
+	margin-bottom: 35px;
+	font-size: 15px;
+}
+
+/* ==== CARDS GRID ==== */
+.grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 35px;
+}
+
+/* ==== CARD ==== */
+.card {
+	background: #141820;
+	padding: 25px 25px;
+	border-radius: 20px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+	border-top: 2px solid transparent;
+	transition: 0.25s;
+}
+
+.card:hover {
+	transform: translateY(-10px);
+}
+
+/* Card colors */
+.card.red {
+	border-color: #ff5d8a;
+}
+.card.blue {
+	border-color: #4db7ff;
+}
+
+/* Card header */
+.card-header {
+	font-size: 20px;
+	margin-bottom: 12px;
+	opacity: 0.9;
+}
+
+/* Value text */
+.value {
+	font-size: 42px;
+	font-weight: 700;
+	margin-bottom: 12px;
+}
+
+/* Canvas chart */
+canvas {
+	width: 100% !important;
+	height: 350px !important;
+	display: block;
+	margin-top: 10px;
+	padding-top: 5px;
+}
+
+/* Hidden section */
+.hidden {
+	display: none !important;
+}
+
+/* LIGHT MODE (optional)*/
+body.light {
+	background: #eff2f6;
+	color: #334155;
+}
+
+body.light .sidebar {
+	background: #a6acfd;
+	border-right: 1px solid #dedede;
+	box-shadow: 4px 0 24px rgba(0, 0, 0, 0.02);
+}
+
+body.light .card {
+	background: white;
+	color: #222;
+	box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ==== SETTINGS PAGE ==== */
+#settings {
+	display: flex; /* Dùng Flexbox */
+	flex-direction: column; /* Xếp dọc */
+	align-items: center; /* Căn giữa theo chiều ngang -> Đưa card vào giữa màn hình */
+	width: 100%; /* Chiếm hết chiều rộng có sẵn */
+}
+
+.settings-card {
+	background: #141820; /* Màu nền giống card */
+	padding: 30px;
+	border-radius: 12px;
+	width: 100%;
+	/* max-width: 600px; Giới hạn chiều rộng cho đẹp */
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+	margin-bottom: 20px;
+}
+
+.input-field {
+	width: 100%;
+	background: #0d0f15; /* Nền input tối hơn nền card */
+	border: 1px solid #2a2d3a;
+	padding: 14px 16px;
+	border-radius: 8px;
+	color: #fff;
+	font-size: 14px;
+	outline: none;
+	transition: 0.3s;
+}
+
+.input-field:focus {
+	border-color: #00eaff; /* Viền sáng màu cyan khi focus */
+	box-shadow: 0 0 8px rgba(0, 234, 255, 0.2);
+}
+
+.input-field::placeholder {
+	color: #55596d;
+}
+
+.btn-save {
+	width: 100%;
+	padding: 14px;
+	border: none;
+	border-radius: 8px;
+	background: #00eaff; /* Màu xanh cyan */
+	color: #000;
+	font-weight: 700;
+	font-size: 16px;
+	cursor: pointer;
+	transition: 0.3s;
+	margin-top: 10px;
+}
+
+.btn-save:hover {
+	background: #00c4d6;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(0, 234, 255, 0.3);
+}
+
+.btn-save:active {
+	transform: translateY(0);
+}
+
+/* Light mode adjustments for inputs */
+body.light .settings-card {
+	background: #fff;
+	border: 1px solid #dedede;
+}
+body.light .input-field {
+	background: #f3f4f7;
+	border-color: #ddd;
+	color: #333;
+}
+
+/* ==== DEVICE PAGE STYLES ==== */
+
+/* Tiêu đề nhỏ cho từng nhóm (Đèn tích hợp, Relay...) */
+.category-group {
+	margin-bottom: 30px;
+}
+
+.category-title {
+	font-size: 16px;
+	color: #6c7285;
+	margin-bottom: 15px;
+	font-weight: 500;
+}
+
+/* Chỉnh lại Card thiết bị cho giống hình */
+.device-card {
+	border-top: none; /* Bỏ viền trên cũ */
+	border-left: 5px solid transparent; /* Dùng viền trái */
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 160px; /* Chiều cao cố định cho đều */
+}
+
+/* Màu viền trái tương ứng */
+.device-card.red {
+	border-left-color: #ff5d8a;
+}
+.device-card.blue {
+	border-left-color: #4db7ff;
+}
+
+/* Nút Toggle (ON/OFF) */
+.toggle-btn {
+	width: 100%;
+	padding: 15px;
+	border-radius: 50px; /* Bo tròn kiểu viên thuốc */
+	border: none;
+	background: #252836; /* Màu xám tối mặc định */
+	color: #6c7285;
+	font-weight: 700;
+	font-size: 16px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	margin-top: auto; /* Đẩy nút xuống đáy card */
+}
+
+.toggle-btn:hover {
+	background: #2f3343;
+}
+
+/* Trạng thái ON */
+.toggle-btn.active {
+	background: #00eaff; /* Màu xanh sáng khi bật */
+	color: #000;
+	box-shadow: 0 0 15px rgba(0, 234, 255, 0.4);
+}
+
+/* Nút tròn nổi (Floating Action Button) */
+.fab {
+	position: fixed;
+	bottom: 40px;
+	right: 40px;
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	background: #00ffc8; /* Màu xanh lá mạ */
+	border: none;
+	color: #000;
+	font-size: 30px;
+	font-weight: bold;
+	cursor: pointer;
+	box-shadow: 0 4px 15px rgba(0, 255, 200, 0.4);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: transform 0.2s;
+}
+
+.fab:hover {
+	transform: scale(1.1);
+}
+
+/* ==== MODAL POPUP STYLES ==== */
+.modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.6); /* Nền mờ phía sau */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+	backdrop-filter: blur(4px); /* Hiệu ứng làm mờ nền sau lưng */
+}
+
+/* Ẩn modal khi không dùng */
+.modal-overlay.hidden {
+	display: none;
+}
+
+.modal-box {
+	background: #161b29; /* Màu nền tối như hình */
+	padding: 30px;
+	border-radius: 12px;
+	width: 400px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+	text-align: center;
+	border: 1px solid #2a2d3a;
+}
+
+.modal-title {
+	color: #fff;
+	margin-bottom: 25px;
+	font-size: 22px;
+	font-weight: 700;
+}
+
+.modal-input {
+	margin-bottom: 15px;
+	background: #0d0f15;
+}
+
+.modal-actions {
+	display: flex;
+	gap: 15px;
+	justify-content: center;
+	margin-top: 10px;
+}
+
+/* Nút Lưu (Xanh ngọc) */
+.btn-confirm {
+	background: #00ffc8;
+	color: #000;
+	border: none;
+	padding: 10px 30px;
+	border-radius: 6px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: 0.2s;
+}
+.btn-confirm:hover {
+	transform: scale(1.05);
+}
+
+/* Nút Hủy (Xám) */
+.btn-cancel {
+	background: #444857;
+	color: #fff;
+	border: none;
+	padding: 10px 30px;
+	border-radius: 6px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: 0.2s;
+}
+.btn-cancel:hover {
+	background: #55596d;
+}
+
+/* ==== INFO TAB STYLES ==== */
+
+/* Class này áp dụng cho từng dòng thông tin */
+.info-row {
+	display: flex; /* Dùng flex để dàn hàng ngang */
+	justify-content: space-between; /* Đẩy: Tên nằm trái, Giá trị nằm phải */
+	align-items: center; /* Căn giữa theo chiều dọc */
+
+	/* TẠO KHOẢNG CÁCH DỌC Ở ĐÂY */
+	padding-top: 15px;
+	padding-bottom: 15px;
+
+	/* (Tùy chọn) Thêm đường kẻ mờ bên dưới để dễ nhìn hơn */
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Bỏ đường kẻ ở dòng cuối cùng cho đẹp */
+.info-row:last-child {
+	border-bottom: none;
+}
+
+/* Định dạng cho chữ tiêu đề (bên trái) */
+.info-row span:first-child {
+	color: #a0aec0; /* Màu xám nhạt */
+	font-weight: 500;
+}
+
+/* Định dạng cho giá trị (bên phải) */
+.info-val {
+	font-weight: 700;
+	color: #ffffff; /* Màu trắng nổi bật */
+	text-align: right;
+}
+
+/* ==== CHỈNH LẠI MÀU CHO LIGHT MODE (Nếu bạn đang dùng Light Mode) ==== */
+body.light .info-row {
+	border-bottom: 1px solid #e2e8f0;
+}
+body.light .info-row span:first-child {
+	color: #64748b; /* Chữ tiêu đề màu xám đậm hơn chút */
+}
+body.light .info-val {
+	color: #0f172a; /* Giá trị màu đen */
+}
+
+/* ==== DELETE BUTTON STYLES ==== */
+
+/* Cập nhật lại class .device-card để nút xóa neo theo nó */
+.device-card {
+	position: relative; /* Quan trọng: Để nút xóa nằm đè lên góc */
+	/* ... các thuộc tính cũ giữ nguyên ... */
+}
+
+/* Nút xóa nhỏ ở góc */
+.btn-delete {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 24px;
+	height: 24px;
+	background: transparent;
+	border: none;
+	color: #64748b; /* Màu xám */
+	font-size: 18px;
+	font-weight: bold;
+	cursor: pointer;
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: 0.2s;
+	z-index: 10;
+}
+
+.btn-delete:hover {
+	background: rgba(255, 93, 138, 0.15); /* Nền đỏ nhạt */
+	color: #ff5d8a; /* Chữ đỏ */
+}
