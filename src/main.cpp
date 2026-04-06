@@ -13,6 +13,10 @@
 #include "task_wifi.h"
 #include "task_core_iot.h"
 #include "pir_sensor.h"
+#include "light_sensor.h"
+#include "light_control.h"
+
+#include "dht20_reader.h"
 
 void system_init();
 void semaphore_init();
@@ -35,8 +39,11 @@ void setup()
 	// xTaskCreate(main_server_task, "Task Main Server", 10240, NULL, 2, NULL);
 	xTaskCreate(Task_Toogle_BOOT, "Task_Toogle_BOOT", 8192, NULL, 2, NULL);
 
+	xTaskCreate(wifi_task, "Task WiFi", 4096, NULL, 2, NULL);
+
 	// xTaskCreate(sensor_log, "Sensor Output Task", 2048, NULL, 2, NULL);
 	xTaskCreate(pir_sensor_task, "PIR Sensor Task", 4096, NULL, 2, NULL);
+	xTaskCreate(light_sensor_task, "Light Sensor Task", 4096, NULL, 2, NULL);
 
 	delay(100);
 	Serial.println("\n===== System initialization completed. =====\n");
@@ -69,10 +76,12 @@ void system_init()
 	semaphore_init();
 
 	Serial.begin(115200);
+	delay(2000); // Wait for serial monitor to connect
 
 	// Load configuration file (if exists)
 	check_info_File(0);
 
 	Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
 	dht20.begin();
+	setup_light_control();
 }

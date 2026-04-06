@@ -1,4 +1,5 @@
 #include "temp_humi_monitor.h"
+#include "supabase.h"
 
 // OhStem LCD I2C address 0x21 == 33
 LiquidCrystal_I2C lcd(33, 16, 2);

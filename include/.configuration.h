@@ -13,7 +13,6 @@
 #define IS_SHOW_PAYLOAD             false
 #define IS_SHOW_INFERENCE_RESULT    false
 
-#define IS_SHOW_BOT_STATUS          false
 #define IS_SHOW_SENSOR_LOG          false
 
 // Time Delays (in milliseconds)
