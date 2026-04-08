@@ -14,6 +14,8 @@ void pir_sensor_task(void *pvParameters)
 {
     setup_pir_sensor();
 
+    bool last_motion = false;
+
     while (true)
     {
 
@@ -21,14 +23,17 @@ void pir_sensor_task(void *pvParameters)
 
         if (motion)
         {
-            Serial.println("[PIR] Motion detected!");
+            if (!last_motion) {
+                Serial.println("[PIR] Motion detected!");
+            }
             turn_front_door_light_on();
         }
         else
         {
-            Serial.println("[PIR] No motion");
             turn_front_door_light_off();
         }
+        
+        last_motion = motion;
 
         vTaskDelay(pdMS_TO_TICKS(1000));
     }

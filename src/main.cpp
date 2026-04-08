@@ -15,8 +15,11 @@
 #include "pir_sensor.h"
 #include "light_sensor.h"
 #include "light_control.h"
+#include "fan_control.h"
 
 #include "dht20_reader.h"
+
+#include "task_supabase.h"
 
 void system_init();
 void semaphore_init();
@@ -34,9 +37,8 @@ void setup()
 	xTaskCreate(dht20_reader, "Task DHT20 Reader", 4096, NULL, 2, NULL);
 
 	xTaskCreate(led_blinky, "Task LED Blinky", 4096, NULL, 2, NULL);
-	// xTaskCreate(neo_blinky, "Task NEO Blinky", 4096, NULL, 2, NULL);
+	xTaskCreate(neo_blinky, "Task NEO Blinky", 4096, NULL, 2, NULL);
 	xTaskCreate(temp_humi_monitor, "Task Temp & Humi Monitor", 4096, NULL, 2, NULL);
-	// xTaskCreate(main_server_task, "Task Main Server", 10240, NULL, 2, NULL);
 	xTaskCreate(Task_Toogle_BOOT, "Task_Toogle_BOOT", 8192, NULL, 2, NULL);
 
 	xTaskCreate(wifi_task, "Task WiFi", 4096, NULL, 2, NULL);
@@ -44,6 +46,8 @@ void setup()
 	// xTaskCreate(sensor_log, "Sensor Output Task", 2048, NULL, 2, NULL);
 	xTaskCreate(pir_sensor_task, "PIR Sensor Task", 4096, NULL, 2, NULL);
 	xTaskCreate(light_sensor_task, "Light Sensor Task", 4096, NULL, 2, NULL);
+	xTaskCreate(fan_control_task, "Fan Control Task", 4096, NULL, 2, NULL);
+	xTaskCreate(task_supabase, "Task Supabase", 8192, NULL, 2, NULL);
 
 	delay(100);
 	Serial.println("\n===== System initialization completed. =====\n");

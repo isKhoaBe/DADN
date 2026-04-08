@@ -12,6 +12,7 @@
 typedef struct {
   float temperature;
   float humidity;
+  float light_level;
 } SensorData;
 
 extern SemaphoreHandle_t xBinarySemaphoreInternet;

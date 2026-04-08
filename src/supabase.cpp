@@ -1,7 +1,7 @@
 #include "supabase.h"
 #include "global.h"
 #include <ArduinoJson.h>
-#include <HttpClient.h>
+#include <HTTPClient.h>
 #include <WiFi.h>
 
 // --- IMPORTANT ---
@@ -16,7 +16,7 @@ const char *SUPABASE_TABLE_NAME = "sensor_readings";
 const int SUPABASE_DEVICE_ID = 1; // Assuming 'YB_01' is device ID 1
 // ----------------
 
-void sendDataToSupabase(float temp, float humi)
+void sendDataToSupabase(float temp, float humi, float light)
 {
     if (WiFi.status() != WL_CONNECTED)
     {
@@ -24,12 +24,10 @@ void sendDataToSupabase(float temp, float humi)
         return;
     }
 
-    WiFiClient wifi;
-    HttpClient client = HttpClient(wifi, SUPABASE_URL, 443);
+    HTTPClient http;
 
     // The "rest/v1" is the standard path for the REST API
-    String api_path = "/rest/v1/";
-    api_path += SUPABASE_TABLE_NAME;
+    String api_path = String(SUPABASE_URL) + "/rest/v1/" + SUPABASE_TABLE_NAME;
 
     Serial.println("Attempting to send data to Supabase...");
     Serial.print("API Path: ");
@@ -40,28 +38,41 @@ void sendDataToSupabase(float temp, float humi)
     doc["device_id"] = SUPABASE_DEVICE_ID;
     doc["temperature"] = temp;
     doc["humidity"] = humi;
+    doc["light_level"] = light;
 
     String jsonString;
     serializeJson(doc, jsonString);
 
-    // Set headers
-    client.beginRequest();
-    client.post(api_path.c_str());
-    client.sendHeader("apikey", SUPABASE_KEY);
-    client.sendHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
-    client.sendHeader("Content-Type", "application/json");
-    client.sendHeader("Prefer", "return=minimal"); // We don't need data back
-    client.sendHeader("Content-Length", jsonString.length());
-    client.beginBody();
-    client.print(jsonString);
-    client.endRequest();
+    // Configure HTTP request
+    http.begin(api_path);
+    http.addHeader("apikey", SUPABASE_KEY);
+    http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
+    http.addHeader("Content-Type", "application/json");
+    http.addHeader("Prefer", "return=minimal"); // We don't need data back
+
+    // Send POST request
+    int httpResponseCode = http.POST(jsonString);
 
     // Read the response
-    int statusCode = client.responseStatusCode();
-    String response = client.responseBody();
+    if (httpResponseCode > 0) {
+        Serial.print("Supabase status code: ");
+        Serial.println(httpResponseCode);
+        
+        if (httpResponseCode == 201) {
+            Serial.println("Data successfully sent to Supabase!");
+        } else if (httpResponseCode == 400) {
+            Serial.println("Error 400: Bad Request (Schema mismatch or invalid data)");
+        } else if (httpResponseCode == 401) {
+            Serial.println("Error 401: Unauthorized (Check your API Key)");
+        } else {
+            String response = http.getString();
+            Serial.print("Supabase response: ");
+            Serial.println(response);
+        }
+    } else {
+        Serial.print("Error sending to Supabase. HTTP POST failed, error: ");
+        Serial.println(http.errorToString(httpResponseCode).c_str());
+    }
 
-    Serial.print("Supabase status code: ");
-    Serial.println(statusCode);
-    Serial.print("Supabase response: ");
-    Serial.println(response);
+    http.end(); // Free resources
 }

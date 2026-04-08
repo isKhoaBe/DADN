@@ -3,6 +3,6 @@
 
 #include <Arduino.h>
 
-void sendDataToSupabase(float temp, float humi);
+void sendDataToSupabase(float temp, float humi, float light);
 
 #endif // __SUPABASE_H__
