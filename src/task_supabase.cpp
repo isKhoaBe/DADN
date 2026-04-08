@@ -3,7 +3,7 @@
 #include "supabase.h"
 #include "Arduino.h"
 
-#define SUPABASE_SEND_DELAY_MS 5000 // Send data every 30 seconds
+#define SUPABASE_SEND_DELAY_MS 10000 // Send data every 30 seconds
 
 void setup_task_supabase()
 {
