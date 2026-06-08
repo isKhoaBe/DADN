@@ -1,6 +1,7 @@
 #include "Arduino.h"
 #include "pir_sensor.h"
 #include "light_control.h"
+#include "supabase.h"
 
 #define PIR_PIN 2
 
@@ -25,11 +26,15 @@ void pir_sensor_task(void *pvParameters)
         {
             if (!last_motion) {
                 Serial.println("[PIR] Motion detected!");
+                sendAlertToSupabase("MOTION", "info", "Motion detected at front door: outside light on");
             }
             turn_front_door_light_on();
         }
         else
         {
+            if (last_motion) {
+                sendAlertToSupabase("MOTION_CLEAR", "routine", "Motion cleared: outside light off");
+            }
             turn_front_door_light_off();
         }
         

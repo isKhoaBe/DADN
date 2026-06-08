@@ -13,7 +13,7 @@ void startSTA()
 	if (WIFI_SSID.isEmpty())
 	{
 		// Provide default if empty, or just skip
-		WIFI_SSID = "Huy gei";
+		WIFI_SSID = "BingChilling";
 		WIFI_PASS = "1234567890";
 	}
 

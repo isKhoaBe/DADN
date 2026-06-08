@@ -1,6 +1,7 @@
 #include "fan_control.h"
 #include "Arduino.h"
 #include "global.h"
+#include "supabase.h"
 
 #define FAN_PIN 4
 #define TEMP_THRESHOLD 32.0f
@@ -23,6 +24,7 @@ void turn_fan_on()
         digitalWrite(FAN_PIN, HIGH);
         is_fan_on = true;
         Serial.println("[FAN_CONTROL] Fan turned ON");
+        sendAlertToSupabase("FAN_ON", "warning", "High temperature or humidity: Fan turned ON");
     }
 }
 
@@ -32,6 +34,7 @@ void turn_fan_off()
     {
         digitalWrite(FAN_PIN, LOW);
         is_fan_on = false;
+        sendAlertToSupabase("FAN_OFF", "routine", "Environment normalized: Fan turned OFF");
     }
 }
 

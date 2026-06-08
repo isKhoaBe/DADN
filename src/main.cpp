@@ -16,6 +16,7 @@
 #include "light_sensor.h"
 #include "light_control.h"
 #include "fan_control.h"
+#include "task_ai_relay.h"
 
 #include "dht20_reader.h"
 
@@ -44,10 +45,11 @@ void setup()
 	xTaskCreate(wifi_task, "Task WiFi", 4096, NULL, 2, NULL);
 
 	// xTaskCreate(sensor_log, "Sensor Output Task", 2048, NULL, 2, NULL);
-	xTaskCreate(pir_sensor_task, "PIR Sensor Task", 4096, NULL, 2, NULL);
-	xTaskCreate(light_sensor_task, "Light Sensor Task", 4096, NULL, 2, NULL);
-	xTaskCreate(fan_control_task, "Fan Control Task", 4096, NULL, 2, NULL);
+	xTaskCreate(pir_sensor_task, "PIR Sensor Task", 8192, NULL, 2, NULL);
+	xTaskCreate(light_sensor_task, "Light Sensor Task", 8192, NULL, 2, NULL);
+	xTaskCreate(fan_control_task, "Fan Control Task", 8192, NULL, 2, NULL);
 	xTaskCreate(task_supabase, "Task Supabase", 8192, NULL, 2, NULL);
+	xTaskCreate(ai_relay_task, "AI Relay Task", 8192, NULL, 2, NULL);
 
 	delay(100);
 	Serial.println("\n===== System initialization completed. =====\n");

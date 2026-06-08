@@ -21,16 +21,18 @@ void light_sensor_task(void *pvParameters)
     while (true)
     {
         int light_level = analogRead(LIGHT_SENSOR_PIN);
-        
+
         // Update global sensor data
-        if (xSemaphoreTake(xDHT20Semaphore, pdMS_TO_TICKS(10)) == pdTRUE) {
+        if (xSemaphoreTake(xDHT20Semaphore, pdMS_TO_TICKS(10)) == pdTRUE)
+        {
             sensorData.light_level = (float)light_level;
             xSemaphoreGive(xDHT20Semaphore);
         }
 
         if (light_level < DARK_THRESHOLD)
         {
-            if (!was_dark) {
+            if (!was_dark)
+            {
                 Serial.println("[LIGHT] It's dark, turning light ON");
                 was_dark = true;
             }

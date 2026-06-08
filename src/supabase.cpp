@@ -29,10 +29,6 @@ void sendDataToSupabase(float temp, float humi, float light)
     // The "rest/v1" is the standard path for the REST API
     String api_path = String(SUPABASE_URL) + "/rest/v1/" + SUPABASE_TABLE_NAME;
 
-    Serial.println("Attempting to send data to Supabase...");
-    Serial.print("API Path: ");
-    Serial.println(api_path);
-
     // Create JSON document to match the 'sensor_readings' table
     JsonDocument doc;
     doc["device_id"] = SUPABASE_DEVICE_ID;
@@ -53,26 +49,31 @@ void sendDataToSupabase(float temp, float humi, float light)
     // Send POST request
     int httpResponseCode = http.POST(jsonString);
 
-    // Read the response
-    if (httpResponseCode > 0) {
-        Serial.print("Supabase status code: ");
-        Serial.println(httpResponseCode);
-        
-        if (httpResponseCode == 201) {
-            Serial.println("Data successfully sent to Supabase!");
-        } else if (httpResponseCode == 400) {
-            Serial.println("Error 400: Bad Request (Schema mismatch or invalid data)");
-        } else if (httpResponseCode == 401) {
-            Serial.println("Error 401: Unauthorized (Check your API Key)");
-        } else {
-            String response = http.getString();
-            Serial.print("Supabase response: ");
-            Serial.println(response);
-        }
-    } else {
-        Serial.print("Error sending to Supabase. HTTP POST failed, error: ");
-        Serial.println(http.errorToString(httpResponseCode).c_str());
-    }
-
     http.end(); // Free resources
+}
+
+void sendAlertToSupabase(String alert_type, String severity, String message)
+{
+    if (WiFi.status() != WL_CONNECTED) return;
+
+    HTTPClient http;
+    String api_path = String(SUPABASE_URL) + "/rest/v1/alerts";
+
+    JsonDocument doc;
+    doc["device_id"] = SUPABASE_DEVICE_ID;
+    doc["alert_type"] = alert_type;
+    doc["severity"] = severity;
+    doc["message"] = message;
+
+    String jsonString;
+    serializeJson(doc, jsonString);
+
+    http.begin(api_path);
+    http.addHeader("apikey", SUPABASE_KEY);
+    http.addHeader("Authorization", "Bearer " + String(SUPABASE_KEY));
+    http.addHeader("Content-Type", "application/json");
+    http.addHeader("Prefer", "return=minimal");
+
+    http.POST(jsonString);
+    http.end();
 }
